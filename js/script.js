@@ -43,13 +43,15 @@ let info = document.querySelector('.info-header'),
          let t = Date.parse(endtime) - Date.parse(new Date()),
             seconds = Math.floor((t/1000) % 60),
             minutes = Math.floor((t/1000/60) % 60),
-            hours = Math.floor(t/1000/60/60);
+            hours = Math.floor((t/(1000*60*60))%24),
+            days = Math.floor(t / (1000 * 60 * 60 * 24));
 
             return {
                 'total': t,
                 'seconds': seconds,
                 'minutes': minutes,
                 'hours': hours,
+                'days': days,
             };
     }
 
@@ -58,13 +60,13 @@ let info = document.querySelector('.info-header'),
             hours = timer.querySelector('.hours'),
             minutes = timer.querySelector('.minutes'),
             seconds = timer.querySelector('.seconds'),
-            
+              days = timer.querySelector('.days'),
             timeInterval = setInterval(updateClock, 1000);
 
         function updateClock() {
             let t = getTimeRemaining(endtime);
-
-            hours.textContent = (t.hours);
+            days.textContent = t.days;
+            hours.textContent = ('0' + t.hours).slice(-2);
             minutes.textContent = ('0' + t.minutes).slice(-2);
             seconds.textContent = ('0' + t.seconds).slice(-2);
 
@@ -73,6 +75,7 @@ let info = document.querySelector('.info-header'),
                 hours.textContent = '00';
             minutes.textContent = '00';
             seconds.textContent = '00';
+            days.textContent = '00';
             }
         }
 

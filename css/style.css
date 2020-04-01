@@ -292,6 +292,17 @@ header ul li:before {
   margin: 0 auto;
   margin-top: 4px;
 }
+.timer-text {
+  display: block;
+  padding-top: 5px;
+  font-size: 16px;
+}
+.countdown-number {
+  padding: 10px;
+  border-radius: 3px;
+  background: #37e6ba;
+  display: inline-block;
+}
 .content .slider {
   margin-top: 150px;
   position: relative;
