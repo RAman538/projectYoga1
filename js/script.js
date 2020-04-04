@@ -83,6 +83,51 @@ let info = document.querySelector('.info-header'),
 
     setClock('timer', deadline);
 
+    // Modal:
+
+    let more = document.querySelector('.more'),
+        overlay = document.querySelector('.overlay'),
+        close = document.querySelector('.popup-close');
+
+    more.addEventListener('click', function() {
+        overlay.style.display = 'block';
+        this.classList.add('more-splash');
+        document.body.style.overflow = 'hidden';
+    });
+
+    close.addEventListener('click', function() {
+        overlay.style.display = 'none';
+        more.classList.remove('more-splash');
+        document.body.style.overflow = '';
+    });
+
+    let moreInfo = document.querySelector('.info'),
+       infoBtn = document.querySelectorAll('.description-btn');
+
+    function showMoreInfo() {
+        overlay.style.display = 'block';
+        //this.classList.add('more-splash');
+    }
+
+    //let shM = showMoreInfo.bind(overlay);
+
+    moreInfo.addEventListener('click', function(event) {
+        let target = event.target;
+
+        if(target && target.classList.contains('description-btn')) {
+                for(let i = 0; i < infoBtn.length; i++) {
+                    if(target == infoBtn[i]) {
+                        showMoreInfo();
+                        //shM();
+                        break;
+                    }
+                }
+        }
+    });
+
+
+
+
 });
 
 
