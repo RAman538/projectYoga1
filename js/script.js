@@ -125,6 +125,172 @@ let info = document.querySelector('.info-header'),
         }
     });
 
+       // Forms:
+
+    let message = {
+        loading: 'Загрузка...',
+        success: 'Благодарим! Ожидайте звонок!',
+        failure: 'Упсс! Что то пошло не так(('
+    };
+
+    let formMod = document.querySelector('.main-form'),
+       inputMod = formMod.getElementsByTagName('input'),
+       statusMessag = document.createElement('div'),
+
+       formContact = document.getElementById('form'),
+       inputContact = formContact.getElementsByTagName('input');
+
+       statusMessag.classList.add('status');
+
+       formMod.addEventListener('submit', function(event) {
+            event.preventDefault();
+            formMod.appendChild(statusMessag);
+
+            let request = new XMLHttpRequest();
+
+                request.open('POST', 'server.php');
+                request.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+
+            let formModData = new FormData(formMod);
+
+                request.send(formModData);
+
+            request.addEventListener('readystatechange', function() {
+                if(request.readyState < 4) {
+                    statusMessag.innerHTML = message.loading;
+                } else if(request.readyState === 4 && request.status == 200) {
+                    statusMessag.innerHTML = message.success;
+                } else {
+                    statusMessag.innerHTML = message.failure;
+                }
+            });
+
+            for(let i = 0; i < inputMod.length; i++) {
+                inputMod[i].value = '';
+            }
+
+       }); 
+
+       formContact.addEventListener('submit', function(event) {
+        event.preventDefault();
+        formContact.appendChild(statusMessag);
+
+    let request = new XMLHttpRequest();
+        request.open('POST', 'server.php');
+        request.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+
+    let formContactData = new FormData(formContact);
+        request.send(formContactData);
+
+    request.addEventListener('readystatechange', function() {
+        if(request.readyState < 4) {
+            statusMessag.innerText = message.loading;
+        } else if(request.readyState === 4 && request.status == 200) {
+            statusMessag.innerText = message.success;
+        } else {
+            statusMessag.innerText = message.failure;
+        }
+      });
+
+      for(let i = 0; i < inputContact.length; i++) {
+          inputContact[i].value = '';
+      }
+
+    });
+
+    let contactForm = document.querySelector('.contact-form');
+
+    contactForm.addEventListener('click', function() {
+       statusMessag.innerText = '';
+   });
+
+
+     /*  // Forms for JSON:
+
+    let message = {
+        loading: 'Загрузка...',
+        success: 'Благодарим! Мы свяжемся с вами в ближайшее время!',
+        failure: 'Упсс! Что то пошло не так(('
+    };
+
+    let formMod = document.querySelector('.main-form'),
+       inputMod = formMod.getElementsByTagName('input'),
+       statusMessag = document.createElement('div'),
+
+       formContact = document.getElementById('form'),
+       inputContact = formContact.getElementsByTagName('input');
+
+       statusMessag.classList.add('status');
+
+       formMod.addEventListener('submit', function(event) {
+            event.preventDefault();
+            formMod.appendChild(statusMessag);
+
+            let request = new XMLHttpRequest();
+
+                request.open('POST', 'server.php');
+                request.setRequestHeader('Content-Type', 'application/json', 'charset=utf-8');
+
+            let formModData = new FormData(formMod);
+
+            let obj = {};                   // Создаем пустой объект
+
+            formModData.forEach(function(key, value) {  // и при помощи forEach помещаем туда данные из formData
+                obj[key] = value;                    // но уже в формате ключ: значение
+            });
+
+            let json = JSON.stringify(obj);  // данные в JS формате переводим в формат JASON
+
+                request.send(json);    // и помещаем их в метод отправки
+
+            request.addEventListener('readystatechange', function() {
+                if(request.readyState < 4) {
+                    statusMessag.innerHTML = message.loading;
+                } else if(request.readyState === 4 && request.status == 200) {
+                    statusMessag.innerHTML = message.success;
+                } else {
+                    statusMessag.innerHTML = message.failure;
+                }
+            });
+
+            for(let i = 0; i < inputMod.length; i++) {
+                inputMod[i].value = '';
+            }
+
+       });
+
+       formContact.addEventListener('submit', function(event) {
+        event.preventDefault();
+        formContact.appendChild(statusMessag);
+
+    let request = new XMLHttpRequest();
+        request.open('POST', 'server.php');
+        request.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+
+    let formContactData = new FormData(formContact);
+        request.send(formContactData);
+
+    request.addEventListener('readystatechange', function() {
+        if(request.readyState < 4) {
+            statusMessag.innerText = message.loading;
+        } else if(request.readyState === 4 && request.status == 200) {
+            statusMessag.innerText = message.success;
+        } else {
+            statusMessag.innerText = message.failure;
+        }
+      });
+
+      for(let i = 0; i < inputContact.length; i++) {
+          inputContact[i].value = '';
+      }
+
+    });
+
+    let contactForm = document.querySelector('.contact-form');
+
+    contactForm.addEventListener('click', function() {
+       statusMessag.innerText = '';
+   });*/
 
 
 
