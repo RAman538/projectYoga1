@@ -127,7 +127,7 @@ let info = document.querySelector('.info-header'),
 
        // Forms:
 
-    let message = {
+   /* let message = {
         loading: 'Загрузка...',
         success: 'Благодарим! Ожидайте звонок!',
         failure: 'Упсс! Что то пошло не так(('
@@ -142,18 +142,19 @@ let info = document.querySelector('.info-header'),
 
        statusMessag.classList.add('status');
 
-       formMod.addEventListener('submit', function(event) {
+    function sendForm (elem) {
+        elem.addEventListener('submit', function(event) {
             event.preventDefault();
-            formMod.appendChild(statusMessag);
+            elem.appendChild(statusMessag);
 
             let request = new XMLHttpRequest();
 
                 request.open('POST', 'server.php');
                 request.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
 
-            let formModData = new FormData(formMod);
+            let formData = new FormData(elem);
 
-                request.send(formModData);
+                request.send(formData);
 
             request.addEventListener('readystatechange', function() {
                 if(request.readyState < 4) {
@@ -169,47 +170,24 @@ let info = document.querySelector('.info-header'),
                 inputMod[i].value = '';
             }
 
-       }); 
+         }); 
+    }
 
-       formContact.addEventListener('submit', function(event) {
-        event.preventDefault();
-        formContact.appendChild(statusMessag);
-
-    let request = new XMLHttpRequest();
-        request.open('POST', 'server.php');
-        request.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
-
-    let formContactData = new FormData(formContact);
-        request.send(formContactData);
-
-    request.addEventListener('readystatechange', function() {
-        if(request.readyState < 4) {
-            statusMessag.innerText = message.loading;
-        } else if(request.readyState === 4 && request.status == 200) {
-            statusMessag.innerText = message.success;
-        } else {
-            statusMessag.innerText = message.failure;
-        }
-      });
-
-      for(let i = 0; i < inputContact.length; i++) {
-          inputContact[i].value = '';
-      }
-
-    });
+    sendForm(formMod);
+    sendForm(formContact);
 
     let contactForm = document.querySelector('.contact-form');
 
     contactForm.addEventListener('click', function() {
        statusMessag.innerText = '';
-   });
+   });*/
 
 
-     /*  // Forms for JSON:
+     // Forms for JSON:
 
-    let message = {
+    /* let message = {
         loading: 'Загрузка...',
-        success: 'Благодарим! Мы свяжемся с вами в ближайшее время!',
+        success: 'Благодарим! Ожидайте звонок!',
         failure: 'Упсс! Что то пошло не так(('
     };
 
@@ -222,26 +200,27 @@ let info = document.querySelector('.info-header'),
 
        statusMessag.classList.add('status');
 
-       formMod.addEventListener('submit', function(event) {
+    function sendForm (elem) {
+        elem.addEventListener('submit', function(event) {
             event.preventDefault();
-            formMod.appendChild(statusMessag);
+            elem.appendChild(statusMessag);
 
             let request = new XMLHttpRequest();
 
                 request.open('POST', 'server.php');
-                request.setRequestHeader('Content-Type', 'application/json', 'charset=utf-8');
+                request.setRequestHeader('Content-Type', 'application/json; charset=utf-8');
 
-            let formModData = new FormData(formMod);
+            let formData = new FormData(elem);
 
-            let obj = {};                   // Создаем пустой объект
+            let jsonObj = {};  // переводим данные в формат json: 1) в заголовок ставим application/json; charset=utf-8
 
-            formModData.forEach(function(key, value) {  // и при помощи forEach помещаем туда данные из formData
-                obj[key] = value;                    // но уже в формате ключ: значение
+            formData.forEach(function(key, value) {   // 2) создаем пустой объект и циклом forEach складываем в него данные из формы
+                jsonObj[key] = value;
             });
 
-            let json = JSON.stringify(obj);  // данные в JS формате переводим в формат JASON
-
-                request.send(json);    // и помещаем их в метод отправки
+            let json = JSON.stringify(jsonObj);    // 3) создаем переменную в которую кладем переведенные в формат json данные
+                                                    //  из нашего JS объекта с данными из формы
+                request.send(json);                // 4) кладем эту переменную в метод отправки данных на сервер
 
             request.addEventListener('readystatechange', function() {
                 if(request.readyState < 4) {
@@ -257,40 +236,91 @@ let info = document.querySelector('.info-header'),
                 inputMod[i].value = '';
             }
 
-       });
+         }); 
+    }
 
-       formContact.addEventListener('submit', function(event) {
-        event.preventDefault();
-        formContact.appendChild(statusMessag);
-
-    let request = new XMLHttpRequest();
-        request.open('POST', 'server.php');
-        request.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
-
-    let formContactData = new FormData(formContact);
-        request.send(formContactData);
-
-    request.addEventListener('readystatechange', function() {
-        if(request.readyState < 4) {
-            statusMessag.innerText = message.loading;
-        } else if(request.readyState === 4 && request.status == 200) {
-            statusMessag.innerText = message.success;
-        } else {
-            statusMessag.innerText = message.failure;
-        }
-      });
-
-      for(let i = 0; i < inputContact.length; i++) {
-          inputContact[i].value = '';
-      }
-
-    });
+    sendForm(formMod);
+    sendForm(formContact);
 
     let contactForm = document.querySelector('.contact-form');
 
     contactForm.addEventListener('click', function() {
        statusMessag.innerText = '';
    });*/
+
+
+   // Forms with PROMISE
+
+
+    let message = {
+    loading: 'Загрузка...',
+    success: 'Благодарим! Ожидайте звонок!',
+    failure: 'Упсс! Что то пошло не так(('
+    };
+
+    let formMod = document.querySelector('.main-form'),
+    inputMod = formMod.getElementsByTagName('input'),
+    statusMessag = document.createElement('div'),
+
+    formContact = document.getElementById('form'),
+    inputContact = formContact.getElementsByTagName('input');
+
+    statusMessag.classList.add('status');
+
+    function sendForm (elem) {
+         elem.addEventListener('submit', function(event) {
+            event.preventDefault();
+            elem.appendChild(statusMessag);
+            let formData = new FormData(elem);
+
+        function postData(data) {
+            return new Promise(function(resolve, reject) {
+                let request = new XMLHttpRequest();
+
+                request.open('POST', 'server.php');
+                request.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+
+                request.onreadystatechange = function() {
+                        if(request.readyState < 4) {
+                        resolve();
+                    } else if(request.readyState === 4 && request.status == 200) {
+                        resolve();
+                    } else {
+                        reject();
+                    }
+                };
+                request.send(formData);
+            });
+          }
+
+            function clearInput() {
+                for(let i = 0; i < inputMod.length; i++) {
+                    inputMod[i].value = '';
+                }
+            }
+
+            function clearContactForm() {
+                let contactForm = document.querySelector('.contact-form');
+
+                contactForm.addEventListener('click', function() {
+                statusMessag.innerText = '';
+                });
+            }
+
+            postData(formData)
+                             .then(() => statusMessag.innerText = message.loading)
+                             .then(() => statusMessag.innerText = message.success)
+                             .catch(() => statusMessag.innerText = message.failure)
+                             .then(clearInput)
+                             .then(clearContactForm);
+
+        }); 
+    }
+
+    sendForm(formMod);
+    sendForm(formContact);
+
+    
 
 
 
