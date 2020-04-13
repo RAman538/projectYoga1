@@ -320,9 +320,113 @@ let info = document.querySelector('.info-header'),
     sendForm(formMod);
     sendForm(formContact);
 
+
+    // Slider:
+
+
     
+    let sliderIndex = 1,
+        sliderWrep = document.querySelector('.wrap'),
+        sliderItem = document.querySelectorAll('.slider-item'),
+              prev = document.querySelector('.prev'),
+              next = document.querySelector('.next'),
+          dotsWrep = document.querySelector('.slider-dots'),
+              dots = document.querySelectorAll('.dot');
 
+        showSlider(sliderIndex);
+        
+        function showSlider(n) {
 
+            if(n > sliderItem.length) {
+               sliderIndex = 1;
+            }
+            if(n < 1) {
+                sliderIndex = sliderItem.length;
+            }
+
+            sliderItem.forEach((item) => item.style.display = 'none');
+               /* for(let i = 0; i < sliderItem.length; i++) {   // аналогично тому что выше
+                     sliderItem[i].style.display = 'none';
+                }*/
+
+            dots.forEach((item) => item.classList.remove('dot-active'));
+
+            sliderItem[sliderIndex - 1].style.display = 'block';
+            dots[sliderIndex - 1].classList.add('dot-active');
+        }
+
+        function plusSlide(n) {
+            showSlider(sliderIndex += n);
+        }
+
+        function currentSlide(n) {
+            showSlider(sliderIndex = n);
+        }
+
+        prev.addEventListener('click', function() {
+            plusSlide(-1);
+        });
+
+        next.addEventListener('click', function() {
+            plusSlide(1);
+        });
+
+        dotsWrep.addEventListener('click', function(event) {
+            let cl = event.target;
+            
+            for(let i = 0; i < dots.length + 1; i++) {
+                if(cl.classList.contains('dot') && cl == dots[i-1]) {
+                    currentSlide(i);
+                }
+            }
+        });
+
+    // Calculator
+
+    let persons = document.querySelectorAll('.counter-block-input')[0],
+       restDays = document.querySelectorAll('.counter-block-input')[1],
+       place = document.getElementById('select'),
+       totalValue = document.getElementById('total'),
+       personSum = 0,
+       daySum = 0,
+       totalSum = 0,
+       index = place.options[place.selectedIndex].value;
+
+       totalValue.textContent = 0;
+
+       persons.addEventListener('input', function() {
+              personSum = +this.value;
+              //let index = place.options[place.selectedIndex].value;
+            if(restDays.value == '' || persons.value == '') {
+                totalValue.textContent = 0;
+                totalSum = 0;
+            } else {
+                totalSum = (personSum + daySum) * 5000 * index; //place.options[place.selectedIndex].value;
+                totalValue.textContent = totalSum;
+            }
+       });
+
+       restDays.addEventListener('input', function() {
+               daySum = +this.value;
+               //let index = place.options[place.selectedIndex].value;
+            if(persons.value == '' || restDays.value == '') {
+                totalValue.textContent = 0;
+                totalSum = 0;
+            } else {
+                totalSum = (personSum + daySum) * 5000 * index; //place.options[place.selectedIndex].value;
+                totalValue.textContent = totalSum;
+            }
+       });
+
+       place.addEventListener('change', function() {
+           if(persons.value == '' && restDays.value == '') {
+                totalValue.textContent = 0;
+            } else {
+               let a = totalSum;
+
+               totalValue.textContent = a * this.options[this.selectedIndex].value;
+           }
+       });
 
 });
 
